@@ -33,7 +33,7 @@ class FUNCTIONAl(object): # generador de datos
 		self.D = np.array(D) if not type(D) == type(None) else None
 
 		self.base_set
-		self.base = 
+		self.base = None
 
 
 
