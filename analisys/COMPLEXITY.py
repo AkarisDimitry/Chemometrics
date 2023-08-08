@@ -160,20 +160,20 @@ class COMPLEXITY(object): # generador de datos
 		print( 'Cal-Test samples warping',np.mean(complexity_warping[14:, :14, 0]) )
 		print( 'All samples warping',np.mean(complexity_warping[:, :, 0]) )
 
-		print(complexity_warping.shape, complexity_overlap.shape)
+		#print(complexity_warping.shape, complexity_overlap.shape)
 		complexity_overlap[0,1,:] = np.sum(S[0][0, :]*S[0][1, :])
-		print(self.L.shape, self.S[0].shape, self.S[1].shape)
-		plt.figure(10), plt.plot(self.L[:,0,:].T)
-		plt.figure(11), plt.plot(self.L[:,1,:].T)
-		plt.figure(12), plt.plot(self.S[0].T)
+		# print(self.L.shape, self.S[0].shape, self.S[1].shape)
+		# plt.figure(10), plt.plot(self.L[:,0,:].T)
+		# plt.figure(11), plt.plot(self.L[:,1,:].T)
+		# plt.figure(12), plt.plot(self.S[0].T)
 
-		plt.matshow(complexity_warping[:,:,0] / np.max(complexity_warping[:,:,0]) )
-		plt.matshow(complexity_warping[:,:,1] / np.max(complexity_warping[:,:,1]) )
+		# plt.matshow(complexity_warping[:,:,0] / np.max(complexity_warping[:,:,0]) )
+		# plt.matshow(complexity_warping[:,:,1] / np.max(complexity_warping[:,:,1]) )
 
-		plt.matshow( np.mean(complexity_overlap[:,:,:], axis=2)/ np.max( np.mean(complexity_overlap[:,:,:], axis=2))  )
-		plt.figure(20), plt.plot( complexity_overlap[0,1,:]  )
-		plt.figure(20), plt.plot( complexity_overlap[0,0,:]  )
-		plt.show()
+		# plt.matshow( np.mean(complexity_overlap[:,:,:], axis=2)/ np.max( np.mean(complexity_overlap[:,:,:], axis=2))  )
+		# plt.figure(20), plt.plot( complexity_overlap[0,1,:]  )
+		# plt.figure(20), plt.plot( complexity_overlap[0,0,:]  )
+		# plt.show()
 
 		if save:
 			self.complexity_warping = complexity_warping

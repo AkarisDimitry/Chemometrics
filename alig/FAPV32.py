@@ -206,7 +206,7 @@ class FAPV32(object):
 					CC = self.G( L[nc,na,:], mu_range=area['mu_range'], sigma_range=area['sigma_range'], functional=area['functional'])
 					coef[nc, na] = CC[1]
 					Gcoef[nc, na, :] = CC[2], CC[3] 
-					if v >= 1: print('Gcoef: {:e} mead:{} sd:{} :: sample: {} factor: {} '.format(CC[1], CC[2], CC[3], nc, na))
+					if v >= 1: print('Gcoef: {:>10.3f} mead:{:.3f} sd:{:.3f} :: sample: {} factor: {} '.format(CC[1], CC[2], CC[3], nc, na))
 			A = coef
 		
 			#  evaluate all eigen functions (this step is not necesary ) 
@@ -343,7 +343,7 @@ class FAPV32(object):
 						CC = self.G( L[nc,na,:], mu_range=area['mu_range'], sigma_range=area['sigma_range'], functional=area['functional'] )
 						coef[nc, na] = CC[1]
 						Gcoef[nc, na, :] = CC[2], CC[3] 
-						if v >= 1: print('Gcoef: {:e} mead:{} sd:{} :: sample: {} factor: {} '.format(CC[1], CC[2], CC[3], nc, na))
+						if v >= 1: print('Gcoef: {:>10.3f} mead:{:.3f} sd:{:.3f} :: sample: {} factor: {:.3f} '.format(CC[1], CC[2], CC[3], nc, na))
 				A = coef
 
 				#  evaluate all eigen functions (this step is not necessary ) 
@@ -552,7 +552,7 @@ class FAPV32(object):
 					CC = self.G( L[nc,na,:], mu_range=area['mu_range'], sigma_range=area['sigma_range'] )
 					coef[nc, na] = CC[1]
 					Gcoef[nc, na, :] = CC[2], CC[3] 
-					if v >= 1: print('Gcoef: {:e} mead:{} sd:{} :: sample: {} factor: {} '.format(CC[1], CC[2], CC[3], nc, na))
+					if v >= 1: print('Gcoef: {:>10.3f} mead:{:.3f} sd:{:.3f} :: sample: {} factor: {} '.format(CC[1], CC[2], CC[3], nc, na))
 
 				if plot:
 					plt.plot( L[nc,0,:].T, 'r') 
@@ -587,7 +587,7 @@ class FAPV32(object):
 					CC = self.G( L[nc,na,:], mu_range=area['mu_range']+area['test shift'], sigma_range=area['sigma_range'] )
 					coef[nc, na] = CC[1]
 					Gcoef[nc, na, :] = CC[2], CC[3] 
-					if v >= 1: print('Gcoef: {:e} mead:{} sd:{} :: sample: {} factor: {} '.format(CC[1], CC[2], CC[3], nc, na))
+					if v >= 1: print('Gcoef: {:>10.3f} mead:{:.3f} sd:{:.3f} :: sample: {} factor: {} '.format(CC[1], CC[2], CC[3], nc, na))
 				
 				if plot:
 					plt.plot( L[nc,0,:].T, 'r')

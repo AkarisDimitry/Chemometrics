@@ -19,12 +19,12 @@ except:
 	print('WARNNING :: main_simulation.py :: can NOT correctly load "matplotlib" libraries')
 	print('Install by: ( pip3 install matplotlib )')
 	
-# ==================== ==================== ==================== ==================== === # # ==================== ==================== ==================== ==================== === #
-# ==================== Obj  ====================  Obj  ==================== # # ==================== Obj ====================  Obj ==================== #
-# ==================== ==================== ==================== ==================== === # # ==================== ==================== ==================== ==================== === #
 # *** python common libraries
 import logging, operator, pickle, os
 
+# ==================== ==================== ==================== ==================== === # # ==================== ==================== ==================== ==================== === #
+# ==================== Obj  ====================  Obj  ==================== # # ==================== Obj ====================  Obj ==================== #
+# ==================== ==================== ==================== ==================== === # # ==================== ==================== ==================== ==================== === #
 class DATA(object): # generador de datos
 	def __init__(self, X=None, D=None, Y=None, y=None, S=None, A=None, a=None,
 				f=None, N=None, Nc=None, Nv=None, Nt=None, Na=None, Ni=None, 
@@ -49,12 +49,12 @@ class DATA(object): # generador de datos
 		self.aligned_channel = None
 		self.A = A # INT-8 || Total cumulated area
 
-		self.N = N # INT-8 || dataset length 
+		self.N = N   # INT-8 || dataset length 
 		self.Nc = Nc # INT-8 || number of training sample
 		self.Nv = Nv # INT-8 || number of validation sample
 		self.Nt = Nt # INT-8 || number of test-samples 
 
-		self.f = f # INT-8 || total number of factors   
+		self.f = f   # INT-8 || total number of factors   
 		self.Na = Na # INT-8 || total number of analites 
 		self.Ni = Ni # INT-8 || total number of interferents 
 
@@ -1730,7 +1730,6 @@ class DATA(object): # generador de datos
 						  f=None, Ni=None, Na=None, Nc=None, Nt=None, X=None, 
 						  verbosity=True, plot=False,
 						  ): 
-
 
 		def information(prob):
 			# quantifies the amount of surprise of a probability

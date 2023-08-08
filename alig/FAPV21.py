@@ -12,8 +12,6 @@ try:
 except: 
 	print('WARNNING :: main_simulation.py :: can NOT correctly load "matplotlib" libraries')
 	print('Install by: ( pip3 install matplotlib )')
-	
-# nbands paper
 
 class FAPV21(object):
 	def __init__(self, X=None, D=None, L=None, La=None, f=None, A=None, a=1,
