@@ -445,8 +445,9 @@ def main():
 
 		complexity = COMPLEXITY()
 		FAPV_CPF.inject_data(  complexity )
-		complexity.complexity_analysis()
-		sadf
+
+		#complexity.complexity_analysis()
+
 		# === Complexity analysis === FAPV_OFL
 		# Cal-Cal samples warping 	0.9344434181514619
 		# All samples warping 		0.7907079098473594
@@ -459,18 +460,32 @@ def main():
 		# Cal-Test samples warping 	0.6069685101567605
 		# complexity_overlap 		0.86
 
-		for n in range(21):
-			plt.plot( FAPV_CPF.L[n,0,:]/np.linalg.norm(FAPV_CPF.L[n,0,:]) ) 
+		import matplotlib.pylab as pl
+		colors = pl.cm.Purples(np.linspace(0,1,21))
+	
+		print(colors)
+		for n in range(20):
+			plt.figure(1), plt.plot( FAPV_OFL.L[n,0,:]-FAPV_OFL.L[n,0,0], alpha=0.7, lw=2, color=colors[n]) 
+
+		plt.show()
+
+		asdfasdf
+
+		plt.figure(10), plt.plot( FAPV_CPF.L[15,0,:]/np.linalg.norm(FAPV_CPF.L[15,0,:]) ) 
+		data = FAPV_CPF.L[10,0,:]/np.linalg.norm(FAPV_CPF.L[10,0,:])
+
+		import procesing.functional_base as fb
+		base = fb.BASE() 
+		base.PEM(data=data-data[0], verbosity=True, iterations=3, over_estimation_penalization=1000,
+				sigma=np.arange(10, 150, 1), beta=[10**int(n) for n in np.arange(-30, 1, 1)], functional='salorentz')
+		base.plot_PEM( )
+
 		plt.figure(2), plt.plot( data_OFL.S[0].T )
 		plt.figure(3), plt.plot( data_OFL.S[1].T )
 		plt.show()
 		
-
 		data_OFL, data_CPF = train(data_OFL, data_CPF, model)
-		data_OFL, data_CPF = predic(data_OFL, data_CPF, model)
-
-
-		
+		data_OFL, data_CPF = predic(data_OFL, data_CPF, model)	
 
 		# === guardar datasets === #
 		#save(data_OFL, data_CPF, path='/home/akaris/Documents/code/Chemometrics/files/case_000/ORDERED/DataSet/ICOSHIFT')
