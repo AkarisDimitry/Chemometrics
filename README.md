@@ -1,9 +1,5 @@
-Sure, here's the README.md content with appropriate formatting for GitHub:
 
----
-
-```markdown
-# 2D Ising Model Simulation with Metropolis Algorithm
+# RSC Analytical Methods - Chemometrics Algorithms
 
 ## Installation Guide
 
@@ -218,8 +214,4 @@ v=1,
 ### Important Note
 
 It is imperative to correctly set all the input parameters. The user must know their data and have enough mathematical knowledge to define all the input variables.
-```
 
----
-
-Please replace the placeholders like `'path/to/callfile'` with your actual paths and data. The colored text in markdown for GitHub is achieved using HTML tags; however, they may not render in all markdown renderers. For the best compatibility, you might want to use GitHub's diff syntax to highlight lines of code.

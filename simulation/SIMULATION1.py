@@ -745,6 +745,26 @@ class SIMULATION(object):
 		if type(file_path) != type(None):	df = load_dataframe(file_path)
 		elif type(df) == type(None):		print('ERROR :: SIMULATION.simulation_result_summary_pandas() :: need DF path or DF as input.')
 
+		'''
+		a = df[df['Analysis model']=='MCR']
+		a = a[a['Alignation model']=='None']
+		a = a[a['warping']=='[[0,0],[0.0,0.0],[0.2,0.2]]'][['NRMSD_error','overlaping']] 
+
+		b = df[df['Analysis model']=='MCR']
+		b = b[b['Alignation model']=='FAPV32']
+		b = b[b['warping']=='[[0,0],[0.0,0.0],[0.2,0.2]]'][['NRMSD_error','overlaping']]
+		print(df)
+
+		d = {'col1': a.reset_index(drop=True)['NRMSD_error'], 'col2': b.reset_index(drop=True)['NRMSD_error'], 'overlaping':a.reset_index(drop=True)['overlaping']}
+		df2 = pd.DataFrame(data=d)
+		print(a)
+		print(b)
+		print(df2)
+		g = sns.jointplot(x="col1", y="col2", hue='overlaping', data=df2,
+													                  xlim=(-.01, 0.3), ylim=(-.01, 0.3), kind='scatter',
+													                  color="m", height=7, s=3, palette="flare" )
+		plt.show()
+		'''
 		print(' DataFrame shape : {}'.format(df.shape))
 		for c, col in enumerate(df.columns):
 			print('=== === {} === ==='.format(col))
@@ -897,58 +917,8 @@ class SIMULATION(object):
 						#fig.suptitle( str( ','.join(['{}:{}'.format(filter_name, filter_value) for filter_name, filter_value in zip(inner_list_filter, cs)]) ))
 						plt.savefig('{}/{}_{}.png'.format('/'.join(file_path.split('/')[:-1]), cs, il_values), bbox_inches='tight', dpi=400)
 
-	def get_data(self, file_path, variable='NRMSD_error', save=True):
-		import pandas as pd 
-		import seaborn as sns
-		path = '/'.join(file_path.split('/')[:-1])
-		name = file_path.split('/')[-1]
 
-		def load_dataframe(file_path):
-			tp = pd.read_csv(file_path, '\t', iterator=True, chunksize=10000)
-			df = pd.concat(tp, ignore_index=True)
-			return df 
 
-		df = pd.read_csv(file_path, '\t', iterator=True, chunksize=10000)
-		df = pd.concat(df, ignore_index=True)
-		print( df.columns )
-		print( 'warping', 			df['warping'].unique() )
-		print( 'overlaping', 		df['overlaping'].unique() )
-		print( 'Analysis model',	df['Analysis model'].unique() )
-		print( 'Alignation model', 	df['Alignation model'].unique() )
-
-		colors = [(1.0*float(n)/25,0,0) for n in range(25,1,-1)]
-		data = {}
-
-		df2 = df[df['Analite order'] == 1]
-		df2 = df2[df2['NRMSD_error'] < 0.7]
-		df2 = df2[df2['NRMSD_error'] > 0.0]
-		for m, model in enumerate(df['Analysis model'].unique()[0:]):
-			df3 = df2[df2['Analysis model'] == model]
-			data[model] = {}
-
-			for a, aling in enumerate(df['Alignation model'].unique()[0:]):
-				print('model : ', model, aling)
-				df4 = df3[df3['Alignation model'] == aling]
-				data[model][aling] = []
-
-				for o, overlaping in enumerate(df['overlaping'].unique()[0:] ):
-					df5 = df4[df4['overlaping'] == overlaping]
-					a_vec = []
-
-					for w, warping in enumerate(df['warping'].unique()[0:]):
-						df6 = df5[df5['warping'] == warping]
-						df6.set_index(df6['Internal orden'])
-						df6 = df6['NRMSD_error']
-						df6 = list(df6)
-
-						a_vec.append( np.mean(df6) )
-
-					data[model][aling].append(a_vec)
-
-		for (m, model) in data.items():
-			for (a, aling) in model.items():
-				print(a, aling)
-				np.savetxt(f'{path}/{name}_{m}_{a}.dat', aling)
 
 #g = sns.PairGrid(penguins)
 #g.map_upper(sns.histplot)
@@ -963,70 +933,91 @@ def quela():
 	#simulation.recursive_read_pandas(file_path)
 
 	# = ANALISYS = #
-	#file_path = '/home/akaris/Documents/code/Chemometrics/files/simulations/CSV/noise00.csv'
-	#file_path = '/home/akaris/Documents/code/Chemometrics/files/simulations/CSV/OV_WA_all03.csv'
-	#simulation.get_data(file_path)
+	file_path = '/home/akaris/Documents/code/Chemometrics/files/simulations/CSV/noise00.csv'
+	file_path = '/home/akaris/Documents/code/Chemometrics/files/simulations/CSV/OV_WA_all02.csv'
 
-
-	# == PLOT == #
-
+	import pandas as pd 
 	import seaborn as sns
-	fig, ax = plt.subplots()
+	def load_dataframe(file_path):
+		tp = pd.read_csv(file_path, '\t', iterator=True, chunksize=10000)
+		df = pd.concat(tp, ignore_index=True)
+		return df 
 
-	index = 0
-	colors = [	(1,0,0),  (0.3,0,0), (0.7,0,0),
-				(0,1,0),  (0,0.3,0), (0,0.7,0),
-				(0,0,1),  (0,0,0.3),  (0,0,0.3),   (0,0,0.3),  
-				]
-	for model in ['PARAFAC', 'MCR', 'PARAFAC2']:
-		for aling in ['None', 'FAPV32', 'ICOSHIFT']: # 'ICOSHIFT']:
+	df = pd.read_csv(file_path, '\t', iterator=True, chunksize=10000)
+	df = pd.concat(df, ignore_index=True)
+	print( df.columns )
+	print( df['warping'].unique() )
+	print( df['overlaping'].unique() )
+	print( df['Analysis model'].unique() )
+	print( df['Alignation model'].unique() )
+	df2 = pd.DataFrame()
+	colors = [(1.0*float(n)/25,0,0) for n in range(25,1,-1)]
 
-	#for model in ['PARAFAC', 'MCR',]:
-	#	for aling in ['None', 'FAPV32', ]:
-			#plt.figure(111) 
-			data = np.loadtxt(f'/home/akaris/Documents/code/Chemometrics/files/simulations/CSV/OV_WA_all02.csv_{model}_{aling}.dat')
-			print(model,  aling)
-			#for y in range(data.shape[1]):	data[y,:] =  data[y,0] + data[0,:] + np.random.rand(20)/200
-			data = data[:-2,:-1]
-			'''
-			fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
-			X = np.arange(data.shape[1])/20
-			Y = np.arange(data.shape[0])/20
-			X, Y = np.meshgrid(X, Y)
-			print(X.shape, Y.shape, data.shape)
+	data1mean = [] 
+	data2mean = [] 
 
-			surf = ax.plot_surface(X, Y, data, cmap=cm.coolwarm,
-			                       linewidth=0, antialiased=False)
-			fig.colorbar(surf, shrink=0.5, aspect=5)
+	for model in ['PARAFAC' 'MCR' 'PARAFAC2']:
+		for aling in ['None' 'FAPV32' 'ICOSHIFT']:
+			for i, var2 in enumerate(df['overlaping'].unique()[0:] ):
+				print(var2)
 
-			plt.show()
-			''' 
-			if 1==2:
-				fig, ax = plt.subplots()
-				ax.matshow(data)
-				ax.set_title(f'{model} {aling}')
-				fig.savefig(f'set3_{model}_{aling}' , dpi=400, pad_inches=0.1, bbox_inches='tight', horizontalalignment='right') 
-				plt.show()
+				data1 = [] 
+				data2 = [] 
+				data3 = [] 
 
-			if 1==1:
-				#fig, ax = plt.subplots()
-				orig_map=plt.cm.get_cmap('inferno')
-				reversed_map = orig_map.reversed()
-				color = colors[index]
-				index += 1
-				#surf = ax.matshow(data, vmin=0, vmax=0.45, cmap=reversed_map)
-				#fig.colorbar(surf, shrink=0.5, aspect=5)
-				ax.set_title(f'{model} {aling}')
+				vec1 = []
+				vec2 = []
+
+				for j, var1 in enumerate(df['warping'].unique()[0:]):
+					df2 = df[df['Analysis model'] == 'MCR']
+					df2 = df2[df2['Alignation model'] == 'None']
+					df2 = df2[df2['warping'] == var1]
+					df2 = df2[df2['overlaping'] == var2]
+					df2 = df2[df2['Analite order'] == 1]
+					df2 = df2[df2['NRMSD_error'] < 0.7]
+					df2 = df2[df2['NRMSD_error'] > 0.0]
+					df2.set_index(df2['Internal orden'])
+					df2 = df2['NRMSD_error']
+					df2 = list(df2)
+
+					df3 = df[df['Analysis model'] ==     'PARAFAC']
+					df3 = df3[df3['Alignation model'] == 'None']
+					df3 = df3[df3['warping'] == var1]
+					df3 = df3[df3['overlaping'] == var2]
+					df3 = df3[df3['Analite order'] == 1]
+					df3 = df3[df3['NRMSD_error'] < 0.7]
+					df3 = df3[df3['NRMSD_error'] > 0.0]
+					df3.set_index(df3['Internal orden'])
+					df3 = df3['NRMSD_error']
+					df3 = list(df3)
 				
-				ax.plot(data[16, :], '-o', color=color, label=f'{model} {aling}')
-				#ax.plot(data[:,:], '-o', color=color, )
-				legend = ax.legend(shadow=True, fontsize='x-large')
-	
-	#fig.savefig(f'set4_{model}_{aling}' , dpi=400, pad_inches=0.1, bbox_inches='tight', horizontalalignment='right') 
-	plt.show()
+					data1 += df2[:min([len(df2), len(df3)])] 
+					vec1 += [ np.mean(df2) ]
 
-	print(data)
+					data2 += df3[:min([len(df2), len(df3)])] 
+					vec2 += [ np.mean(df3) ]
 
+					data3 += [j]*min([len(df2), len(df3)]) 
+
+
+
+		df4 = pd.DataFrame( np.array([data1, data2, data3]).T, columns = ['A1', 'A2', 'A3'] )
+
+		g = sns.jointplot(x="A1", y="A2", hue='A3', data=df4,
+	                  xlim=(-.01, 0.7), ylim=(-.01, 0.7), kind='scatter',
+	                  color="m", height=7, s=5, palette="flare" , alpha=0.7)
+
+		data1mean.append( vec1 )
+		data2mean.append( vec2 )
+
+		#fig = g.fig
+		#ax = fig.axes
+		#ax[0].plot(vec1, vec2, '-o', color=colors[i] )
+
+		#plt.tight_layout()
+
+		#plt.savefig(f'fig_{var1}.png', dpi=500,)
+		#plt.show()
 
 	data1mean = np.array( data1mean )
 	data2mean = np.array( data2mean )
@@ -1055,8 +1046,12 @@ def quela():
 
 	plt.show()
 
-
 quela()
+
+
+
+
+
 
 
 	#print(var1, var2)
